@@ -1,9 +1,13 @@
 " Vim syntax file
 " Language:     TI MSP430 Assembler (Microchip's microcontroller)
 " Maintainer:   
-" Last Change:  2003-07-18
+" Last Change:  2003-08-06
 " URL:          
-" Revision:     1.0
+" Revision:     1.1
+"
+" Revision History
+" 1.0   2003-07-18      Initial version
+" 1.1   2003-08-06      Add minimal support for C style comments
 
 " For version 5.x: Clear all syntax items
 " For version 6.x: Quit when a syntax file was already loaded
@@ -63,8 +67,9 @@ syn keyword mspRegister         IFG2 IFG2_
 syn keyword mspRegisterPart     URXIFG1 UTXIFG1
 syn keyword mspRegister         ME2 ME2_
 syn keyword mspRegisterPart     URXE1 USPIE1 UTXE1
-syn keyword mspRegister         WDCTL WDCTL_
-syn keyword mspRegisterPart     WDTIS0 WDTIS1 WDTSSEL WDTCNTCL WDTTMSEL WDTNMI WDTNMIES WDTHOLD WDTPW
+syn keyword mspRegister         WDCTL
+syn keyword mspRegisterPart     WDTIS0 WDTIS1 WDTSSEL WDTCNTCL WDTTMSEL
+syn keyword mspRegisterPart     WDTNMI WDTNMIES WDTHOLD WDTPW
 " Hardware Multiplier
 syn keyword mspRegister         MPY MPY_ MPYS MPYS_ MAC MAC_ OP2 OP2_ 
 syn keyword mspRegister         RESLO RESLO_ RESHI RESHI_ SUMEXT SUMEXT_
@@ -161,6 +166,11 @@ syn match mspDirective   "#\=DEFINE"
 
 syn keyword mspStorage   UDATA0 IDATA0 ECSTR NO_INIT CODE CSTACK
 
+"syn region cCommentL	start="//" skip="\\$" end="$" keepend contains=@cCommentGroup,cSpaceError
+"syn region cComment	matchgroup=cCommentStart start="/\*" matchgroup=NONE end="\*/" contains=@cCommentGroup,cCommentStartError,cSpaceError
+syn region cCommentL	start="//" skip="\\$" end="$" keepend 
+syn region cComment	matchgroup=cCommentStart start="/\*" matchgroup=NONE end="\*/" 
+
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
 " For version 5.8 and later: only when an item doesn't have highlighting yet
@@ -174,6 +184,8 @@ if version >= 508 || !exists("did_pic16f84_syntax_inits")
 
   HiLink mspTodo               Todo
   HiLink mspComment            Comment
+  HiLink cComment              Comment
+  HiLink cCommentL             Comment
   HiLink mspDirective          Statement
   HiLink mspLabel              Label
   HiLink mspString             String
